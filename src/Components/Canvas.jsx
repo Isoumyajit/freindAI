@@ -81,8 +81,9 @@ export const Canvas = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: data.current.value
+        prompt: data.current.value,
       }),
+      mode: "cors",
     });
     clearInterval(loadInterval);
     form.reset();
