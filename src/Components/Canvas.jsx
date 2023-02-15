@@ -1,7 +1,7 @@
 import React from "react";
 import { useRef } from "react";
 import { AiOutlineSend } from "react-icons/ai";
-// import { BiBot, BiUserCircle } from "react-icons/bi";
+import axios from "axios";
 import "../Assets/Css/Chathead.css";
 
 export const Canvas = () => {
@@ -10,6 +10,7 @@ export const Canvas = () => {
   let chatContainer = null;
   let loadInterval = null;
   const baseURL = "https://chataibackendservice.onrender.com/";
+  // const baseURL = "http://localhost:3001/";
 
   const getformData = () => {
     form = document.querySelector("form");
@@ -30,14 +31,15 @@ export const Canvas = () => {
     let interval = setInterval(() => {
       if (index < text.length) {
         if (text.charAt(index) === "\n") element.innerHTML += "<br/>";
-        else { element.innerHTML += text.charAt(index); }
+        else {
+          element.innerHTML += text.charAt(index);
+        }
         index++;
       } else {
         clearInterval(interval);
       }
     }, 40);
   };
-
 
   const generateID = () => {
     const timestamp = Date.now();
@@ -75,38 +77,39 @@ export const Canvas = () => {
     chatContainer.scrollTop = chatContainer.scrollHeight;
     const msgDiv = document.getElementById(id);
     loader(msgDiv);
-    const response = await fetch(baseURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: data.current.value,
-      }),
-      mode: "cors",
-    });
+    const response = await axios.post(
+      baseURL,
+      [{ prompt: data.current.value }],
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+      }
+    );
     clearInterval(loadInterval);
     form.reset();
     msgDiv.innerHTML = "";
-    if (response.ok ) {
-      let returnedData = await response.json();
+    if (response.status === 200) {
+      console.log(response);
+      let returnedData = await response.data;
       const parsedData = returnedData.bot.trim();
       typingHandler(msgDiv, parsedData);
-    } else {
+    } else if (response.status !== 200) {
       let err = await response.text();
-      console.error(err)
-      typingHandler(msgDiv,"Hey Ai Is Down right now");
+      console.error(err);
+      typingHandler(msgDiv, "Hey Ai Is Down right now");
     }
   };
 
-  
   return (
     <div className=" flex canvas bg-gray-700 max-w-full h-screen">
-        <div
-          className="w-fit ml-5 mt-5 md:m-10 absolute text-white md:p-2"
-          id="chat_container"
-        ></div>
-    
+      <div
+        className="w-fit ml-5 mt-5 md:m-10 absolute text-white md:p-2"
+        id="chat_container"
+      ></div>
+
       <div className="flex items-center justify-center min-w-full mt-auto">
         <form
           className=" z-50 text-white bg-gray-600 rounded-lg mb-3 p-2 flex bottom-48 justify-center w-full m-5 lg:ml-60 lg:mr-60"
