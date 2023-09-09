@@ -1,0 +1,82 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  margin: 10px;
+}
+.chat {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai {
+  background-color: rgb(53, 53, 53);
+  border-radius: 10px;
+}
+.user {
+  background-color: rgb(128, 128, 128);
+  border-radius: 10px;
+}
+.profile {
+  margin: 10px;
+  padding: 1rem auto;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  background: #4ebdf1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.profile img {
+  object-fit: contain;
+}
+#chat_container {
+  height: 80vh;
+  overflow-y: scroll;
+}
+#chat_container::-webkit-scrollbar {
+  display: none;
+}
+
+.chathead {
+  flex: 1;
+  color: #dcdcdc;
+  font-size: 20px;
+  max-width: 100%;
+  overflow-x: scroll;
+  white-space: pre-wrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chathead-container {
+  display: flex;
+  flex-direction: column;
+}
+.chathead::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    min-width: 90rem;
+  }
+}
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  .wrapper {
+    min-width: 300px;
+  }
+  .chathead-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
